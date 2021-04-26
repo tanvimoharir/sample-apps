@@ -28,7 +28,9 @@ namespace BooksApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.Configure<BookstoreDatabasesettings>(Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
+            services.AddSingleton<IBookstoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>.Value());
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
