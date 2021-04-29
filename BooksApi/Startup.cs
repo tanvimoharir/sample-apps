@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BooksApi.Models;
+using BooksApi.Services;
 
 namespace BooksApi
 {
@@ -41,6 +42,12 @@ namespace BooksApi
             //When injected,the interface resolves to a BookstoreDatabaseSettings object
             //By 'registering' in DI container - the container must know which depedency to instantiate,this process is called registration
             //While resolving depedency,the container will create the objects automatically(this process is called resolve)
+            
+            services.AddSingleton<BookService>();
+            //the BookService class is registered with DI to support constructor injection in consuming classes
+            //the singleton service lifetime is most appropriate because Bookservice takes a direct dependency on MongoClient.
+            //Per the official Mongo Client usage guidelines,MongoClient should be registered in DI
+            //with singleton service lifetime
             services.AddControllers();
         }
 
