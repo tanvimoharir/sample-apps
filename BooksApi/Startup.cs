@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using BooksApi.Models;
 using BooksApi.Services;
 
@@ -30,7 +31,7 @@ namespace BooksApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.Configure<BookstoreDatabasesettings>(Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
+            services.Configure<BookstoreDatabaseSettings>(Configuration.GetSection("BookstoreDatabaseSettings"));
             //The configuration instance to which appsettings.json file's BookstoreDatabaseSettings section binds is registered in DI container
             //DI container is a framework for implementing automatic Dependency injection
             //The 'container' creates an object of the specified class and also injects all the dependency objects through a constructor,
@@ -52,10 +53,11 @@ namespace BooksApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.Create(builder => builder.AddDebug());
 
             app.UseMvc();
         }
