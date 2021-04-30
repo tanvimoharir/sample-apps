@@ -15,7 +15,7 @@ namespace BooksApi
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -38,7 +38,7 @@ namespace BooksApi
             //a property or a method at run time and disposes it at the appropriate time so that we dont have to create/manage objects manually
             //For example BookstoreDatabaseSettings' object's ConnectionString property is populated with the BookstoreDatabaseSettings:ConnectionString
             //property in appsettings.json
-            services.AddSingleton<IBookstoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>.Value());
+            //services.AddSingleton<IBookstoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>.Value());
             //The IBookstoreDatabaseSettings interface is registered in DI with a singleton service.
             //When injected,the interface resolves to a BookstoreDatabaseSettings object
             //By 'registering' in DI container - the container must know which depedency to instantiate,this process is called registration
@@ -53,13 +53,13 @@ namespace BooksApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.Create(builder => builder.AddDebug());
 
-            app.UseMvc();
+            //app.UseMvc();
         }
     }
 }
